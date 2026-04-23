@@ -25,8 +25,12 @@ Secțiunea dedicată administratorilor pentru monitorizarea sesiunilor și a act
 
 ### ➕ Dialoguri Interactive
 Sistem de ferestre modale pentru adăugarea, editarea și notarea filmelor vizionate.
-![AddWatchList](/UI_Photos/DialogBoxAddWatchList)
-![MatkedAsWatched](/UI_Photos/DialogBoxMarkedAsWatched)
+| Add Movie to WatchList | Mark movie as watched |
+| :---: | :---: |
+| ![AddWatchList](/UI_Photos/DialogBoxAddWatchList) | ![MarkedAsWatched](/UI_Photos/DialogBoxMarkedAsWatched) |
+
+
+
 
 ---
 
