@@ -9,18 +9,22 @@
 ---
 
 ## 🖼️ Preview & Screenshots
+### 🖥️ LogIn and SignUp
+![User Dashboard](/UI_Photos/LogIn.jpg)
+![User Dashboard](/UI_Photos/CreateAccount.jpg)
 
 ### 🖥️ Dashboard Utilizator
 Interfața principală unde poți gestiona lista de filme și poți folosi funcția de Random Picker.
-![User Dashboard](link_catre_poza_ta_1.png)
+![User Dashboard](/UI_Photos/HomePage.jpg)
 
 ### 📊 Admin Panel
 Secțiunea dedicată administratorilor pentru monitorizarea sesiunilor și a activității utilizatorilor.
-![Admin Panel](link_catre_poza_ta_2.png)
+![Admin Panel](/UI_Photos/AdminPanel.jpg)
 
 ### ➕ Dialoguri Interactive
 Sistem de ferestre modale pentru adăugarea, editarea și notarea filmelor vizionate.
-![Modals Preview](link_catre_poza_ta_3.png)
+![AddWatchList](/UI_Photos/DialogBoxAddWatchList)
+![MatkedAsWatched](/UI_Photos/DialogBoxMarkedAsWatched)
 
 ---
 
