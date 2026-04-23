@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="TEMA1_II.HomeWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TEMA1_II.DataModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="CinemaGlow">
+
+    <Grid>
+        <!-- Setare background -->
+        <Grid.Background>
+            <ImageBrush ImageSource="background2.jpg"
+                        Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <!-- impartire ecran in 3 coloane - WatchList, separator si Watched -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Face imaginea mai intunecata-->
+        <Rectangle Grid.ColumnSpan="3" Fill="#000000" Opacity="0.45"/>
+
+        <!-- PARTEA STANGA - WELCOME, WatchList si RandomPicker ( toate pe coloana 0 ) -->
+        <Grid Grid.Column="0" Margin="24">
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>      <!-- partea de Welcome -->
+                <RowDefinition Height="Auto"/>      <!-- partea de WatchList -->
+                <RowDefinition Height="*"/>         <!-- partea de RandomPicker-->
+            </Grid.RowDefinitions>
+
+            <!-- WELCOME -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,32">
+                <TextBlock Text="🎬 Welcome to CinemaGlow!"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="#E8B923"/>
+            </StackPanel>
+
+            <!-- WATCHLIST -->
+            <!-- chenarul pentru watch list cu border auriu -->
+            <Border Grid.Row="1"
+                    Padding="20"
+                    Background="#CC111111"
+                    CornerRadius="16"
+                    BorderBrush="#E8B923"
+                    BorderThickness="1"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,0,0,12">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Titlul listei -->
+                        <RowDefinition Height="Auto"/> <!-- Header-ul listei -->
+                        <RowDefinition Height="200"/> <!-- Lista propriu-zisa - dimensiune fixa -->
+                        <RowDefinition Height="Auto"/> <!-- Butonul de watch movie -->
+                    </Grid.RowDefinitions>
+
+                    <!-- TITLU WatchList -->
+                    <!-- margin are stanga sus dreapta jos -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBlock Text="🎬" FontSize="22" Margin="0,0,8,0"/>
+                        <TextBlock Text="Watchlist"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="#E8B923"/>
+                    </StackPanel>
+
+                    <!-- HEADER WatchList -->
+                    <Grid Grid.Row="1" Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="28"/>  <!-- coloana pentru checkbox-->
+                            <ColumnDefinition Width="*"/>   <!-- coloana pentru movie name -->
+                            <ColumnDefinition Width="110"/> <!-- coloana pentru genre -->
+                            <ColumnDefinition Width="70"/> <!-- coloana pentru actiuni edit / delete -->
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Grid.Column="0" Text="" FontSize="12" Foreground="#777"/>
+                        <TextBlock Grid.Column="1" Text="Movie" FontSize="12" Foreground="#777" Margin="4,0,0,0"/>
+                        <TextBlock Grid.Column="2" Text="Genre" FontSize="12" Foreground="#777"/>
+                        <TextBlock Grid.Column="3" Text="Actions" FontSize="12" Foreground="#777" HorizontalAlignment="Center"/>
+                    </Grid>
+
+                    <!-- separatorul dintre header si lista -->
+                    <Rectangle Grid.Row="1" Height="1" Fill="#333333" VerticalAlignment="Bottom"/>
+
+                    <!-- LISTA WatchList -->
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,4,0,0">
+                        <ItemsControl x:Name="WatchlistItems">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="local:MovieItem">
+                                    <Border Background="#1A1A1A" CornerRadius="10" Padding="8,10" Margin="0,3">
+                                        <Grid>
+                                            
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="28"/> <!-- coloana pentru checkbox-->
+                                                <ColumnDefinition Width="*"/> <!-- coloana pentru movie name -->
+                                                <ColumnDefinition Width="110"/> <!-- coloana pentru genre -->
+                                                <ColumnDefinition Width="70"/> <!-- coloana pentru actiuni edit / delete -->
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <CheckBox Grid.Column="0" VerticalAlignment="Center" Checked="OnMovieWatched" Tag="{Binding}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="White" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding Genre}" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                            
+                                            <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Button Content="✏️" Background="Transparent" BorderThickness="0" Padding="4" Click="OnEditWatchlistMovie" Tag="{Binding}"/>
+                                                <Button Content="🗑️" Background="Transparent" BorderThickness="0" Padding="4" Click="OnDeleteWatchlistMovie" Tag="{Binding}"/>
+                                            </StackPanel>
+                                            
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- BUTTON WatchMovie -->
+                    <Button Grid.Row="3"
+                            Margin="0,12,0,0"
+                            Background="#E8B923"
+                            Foreground="#0D0D0D"
+                            FontWeight="SemiBold"
+                            CornerRadius="10"
+                            Padding="16,10"
+                            HorizontalAlignment="Right"
+                            Click="OnAddMovieClick">
+                        
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="+" FontSize="16"/>
+                            <TextBlock Text="Watch movie" FontSize="13"/>
+                        </StackPanel>
+                        
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- RANDOM PICKER -->
+            <Border Grid.Row="2"
+                    Padding="20"
+                    Background="#CC111111"
+                    CornerRadius="16"
+                    BorderBrush="#9B59B6"
+                    BorderThickness="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>  <!-- titlul Random Picker-->
+                        <RowDefinition Height="Auto"/>  <!-- selectare genre -->
+                        <RowDefinition Height="Auto"/>  <!-- butonul de pick -->
+                        <RowDefinition Height="*"/>     <!-- rezultat -->
+                    </Grid.RowDefinitions>
+
+                    <!-- TITLU -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBlock Text="🎲" FontSize="22" Margin="0,0,8,0"/>
+                        <TextBlock Text="Random Picker"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="#9B59B6"/>
+                    </StackPanel>
+
+                    <!-- GENRE SELECT -->
+                    <StackPanel Grid.Row="1" Margin="0,0,0,12">
+                        <TextBlock Text="Filter by genre" FontSize="13" Foreground="#AAAAAA" Margin="0,0,0,6"/>
+                        <ComboBox x:Name="RandomGenreBox"
+                                  PlaceholderText="Any genre"
+                                  Background="#0D0D0D"
+                                  Foreground="White"
+                                  BorderBrush="#9B59B6"
+                                  BorderThickness="0,0,0,1"
+                                  FontSize="14"
+                                  Padding="8,10"
+                                  HorizontalAlignment="Stretch">
+                            <ComboBoxItem Content="Any genre"/>
+                            <ComboBoxItem Content="Action"/>
+                            <ComboBoxItem Content="Adventure"/>
+                            <ComboBoxItem Content="Animation"/>
+                            <ComboBoxItem Content="Comedy"/>
+                            <ComboBoxItem Content="Crime"/>
+                            <ComboBoxItem Content="Documentary"/>
+                            <ComboBoxItem Content="Drama"/>
+                            <ComboBoxItem Content="Fantasy"/>
+                            <ComboBoxItem Content="Horror"/>
+                            <ComboBoxItem Content="Mystery"/>
+                            <ComboBoxItem Content="Romance"/>
+                            <ComboBoxItem Content="Sci-Fi"/>
+                            <ComboBoxItem Content="Thriller"/>
+                            <ComboBoxItem Content="Western"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- BUTTON PICK -->
+                    <Button Grid.Row="2"
+                            Margin="0,0,0,16"
+                            Background="#9B59B6"
+                            Foreground="White"
+                            FontWeight="SemiBold"
+                            CornerRadius="10"
+                            Padding="16,10"
+                            HorizontalAlignment="Left"
+                            Click="OnRandomPickClick">
+                        
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <TextBlock Text="🎲" FontSize="14"/>
+                            <TextBlock Text="Pick for me" FontSize="13"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- REZULTAT -->
+                    <Border Grid.Row="3"
+                            x:Name="RandomResultPanel"
+                            Background="#1A1A1A"
+                            CornerRadius="12"
+                            Padding="16"
+                            Visibility="Collapsed"
+                            VerticalAlignment="Top">    
+                        <StackPanel>
+                            <TextBlock Text="Tonight, watch:" FontSize="12" Foreground="#888888" Margin="0,0,0,4"/>
+                            <TextBlock x:Name="RandomResultTitle"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               TextWrapping="Wrap"/>
+                            <TextBlock x:Name="RandomResultGenre"
+                               FontSize="13"
+                               Foreground="#9B59B6"
+                               Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Separator transparent -->
+        <Rectangle Grid.Column="1" Width="1" Fill="Transparent" VerticalAlignment="Stretch"/>
+
+        <!--Partea dreapta - Watched -->
+        <Border Grid.Column="2"
+                Margin="24"
+                Padding="20"
+                Background="#CC111111"
+                CornerRadius="16"
+                BorderBrush="#4CAF82"
+                BorderThickness="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <!-- titlul Watched-->
+                    <RowDefinition Height="Auto"/> <!-- Header lista Watched -->
+                    <RowDefinition Height="*"/> <!-- lista in sine --> 
+                </Grid.RowDefinitions>
+
+                <!-- TITLU Watched -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                    <TextBlock Text="✅" FontSize="22" Margin="0,0,8,0"/>
+                    <TextBlock Text="Watched"
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Foreground="#4CAF82"/>
+                </StackPanel>
+
+                <!-- HEADER  -->
+                <Grid Grid.Row="1" Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/> <!-- Movie name -->
+                        <ColumnDefinition Width="80"/> <!-- Genre -->
+                        <ColumnDefinition Width="90"/> <!-- Platform -->
+                        <ColumnDefinition Width="86"/> <!-- Date -->
+                        <ColumnDefinition Width="60"/> <!-- Rating -->
+                        <ColumnDefinition Width="32"/> <!-- Delete Action-->
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Movie name" FontSize="12" Foreground="#777"/> <!-- coloana cu nume -->
+
+                    <!-- coloana cu Genre si butonul pentru sortare dupa gen -->
+                    <Button Grid.Column="1" Background="Transparent" BorderThickness="0" Padding="0" Click="OnSortByGenre">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="Genre" FontSize="12" Foreground="#777"/>
+                            <TextBlock Text="▼" FontSize="9" Foreground="#777" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <TextBlock Grid.Column="2" Text="Platform" FontSize="12" Foreground="#777"/> <!-- coloana cu platform -->
+
+                    <!-- coloana cu Date si butonul pentru sortare dupa date -->
+                    <Button Grid.Column="3" Background="Transparent" BorderThickness="0" Padding="0" Click="OnSortByDate">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="Date" FontSize="12" Foreground="#777"/>
+                            <TextBlock Text="▼" FontSize="9" Foreground="#777" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- coloana cu rating si butonul pentru sortare dupa rating -->
+                    <Button Grid.Column="4" Background="Transparent" BorderThickness="0" Padding="0" Click="OnSortByRating">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="Rating" FontSize="12" Foreground="#777"/>
+                            <TextBlock Text="▼" FontSize="9" Foreground="#777" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <TextBlock Grid.Column="5" Text="" FontSize="12" Foreground="#777"/> <!-- coloana cu delete -->
+                </Grid>
+
+                <Rectangle Grid.Row="1" Height="1" Fill="#333333" VerticalAlignment="Bottom"/> <!-- separator dintre header si lista -->
+
+                <!-- LISTA -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,4,0,0">
+                    <ItemsControl x:Name="WatchedItems">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="local:WatchedMovieItem">
+                                <Border Background="#1A1A1A"
+                                        CornerRadius="10"
+                                        Padding="8,10"
+                                        Margin="0,3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/> <!-- coloana movie name -->
+                                            <ColumnDefinition Width="80"/> <!-- coloana genre -->
+                                            <ColumnDefinition Width="90"/> <!-- coloana Platform -->
+                                            <ColumnDefinition Width="86"/> <!-- coloana Date Watched -->
+                                            <ColumnDefinition Width="60"/> <!-- coloana rating -->
+                                            <ColumnDefinition Width="32"/> <!-- coloana delete action -->
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding Title}"
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="White"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,6,0"
+                                                   TextTrimming="CharacterEllipsis"/>
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding Genre}"
+                                                   FontSize="12"
+                                                   Foreground="#888888"
+                                                   VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding Platform}"
+                                                   FontSize="12"
+                                                   Foreground="#AAAAAA"
+                                                   VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+
+                                        <TextBlock Grid.Column="3"
+                                                   Text="{Binding DateWatched}"
+                                                   FontSize="11"
+                                                   Foreground="#666666"
+                                                   VerticalAlignment="Center"
+                                                   TextWrapping="Wrap"/>
+
+                                        <TextBlock Grid.Column="4"
+                                                   Text="{Binding StarsDisplay}"
+                                                   FontSize="12"
+                                                   Foreground="#E8B923"
+                                                   VerticalAlignment="Center"/>
+
+                                        <Button Grid.Column="5"
+                                                Content="🗑️"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                FontSize="13"
+                                                Padding="4"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"
+                                                Click="OnDeleteWatchedMovie"
+                                                Tag="{Binding}"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </Grid>
+        </Border>
+
+        <!-- ADD MOVIE DIALOG BOX -->
+        <Grid x:Name="AddMovieOverlay"
+              Grid.ColumnSpan="3"
+              Visibility="Collapsed"
+              Background="#99000000">
+            <Border Background="#1A1A2E" BorderBrush="#E8B923" BorderThickness="1"
+                    CornerRadius="16" Padding="32,28" Width="360"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Spacing="0">
+                    <TextBlock Text="Add to Watchlist" FontSize="18" FontWeight="Bold"
+                               Foreground="#E8B923" Margin="0,0,0,20"/>
+
+                    <TextBlock Text="Movie title" FontSize="13" Foreground="#AAAAAA" Margin="0,0,0,6"/>
+                    <TextBox x:Name="AddTitleBox" PlaceholderText="e.g. Inception"
+                             Background="#0D0D0D" Foreground="White"
+                             BorderBrush="#E8B923" BorderThickness="0,0,0,1"
+                             FontSize="14" Padding="8,10" Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Genre" FontSize="13" Foreground="#AAAAAA" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="AddGenreBox"
+                              PlaceholderText="Select a genre"
+                              Background="#0D0D0D" Foreground="White"
+                              BorderBrush="#E8B923" BorderThickness="0,0,0,1"
+                              FontSize="14" Padding="8,10" Margin="0,0,0,24"
+                              HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="Action"/>
+                        <ComboBoxItem Content="Adventure"/>
+                        <ComboBoxItem Content="Animation"/>
+                        <ComboBoxItem Content="Comedy"/>
+                        <ComboBoxItem Content="Crime"/>
+                        <ComboBoxItem Content="Documentary"/>
+                        <ComboBoxItem Content="Drama"/>
+                        <ComboBoxItem Content="Fantasy"/>
+                        <ComboBoxItem Content="Horror"/>
+                        <ComboBoxItem Content="Mystery"/>
+                        <ComboBoxItem Content="Romance"/>
+                        <ComboBoxItem Content="Sci-Fi"/>
+                        <ComboBoxItem Content="Thriller"/>
+                        <ComboBoxItem Content="Western"/>
+                    </ComboBox>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/> <!-- coloana pentru buton de cancel -->
+                            <ColumnDefinition Width="*"/> <!-- coloana pentru buton de add movie -->
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Cancel" HorizontalAlignment="Stretch"
+                                Margin="0,0,8,0" Background="#2A2A4A" Foreground="White"
+                                CornerRadius="8" Padding="0,10" Click="OnAddMovieCancel"/>
+                        <Button Grid.Column="1" Content="Add" HorizontalAlignment="Stretch"
+                                Margin="8,0,0,0" Background="#E8B923" Foreground="#0D0D0D"
+                                FontWeight="SemiBold" CornerRadius="8" Padding="0,10"
+                                Click="OnAddMovieConfirm"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- EDIT MOVIE DIALOG BOX -->
+        <Grid x:Name="EditMovieOverlay"
+              Grid.ColumnSpan="3"
+              Visibility="Collapsed"
+              Background="#99000000">
+            <Border Background="#1A1A2E" BorderBrush="#E8B923" BorderThickness="1"
+                    CornerRadius="16" Padding="32,28" Width="360"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Spacing="0">
+                    <TextBlock Text="Edit Movie" FontSize="18" FontWeight="Bold"
+                               Foreground="#E8B923" Margin="0,0,0,20"/>
+
+                    <TextBlock Text="Movie title" FontSize="13" Foreground="#AAAAAA" Margin="0,0,0,6"/>
+                    <TextBox x:Name="EditTitleBox"
+                             Background="#0D0D0D" Foreground="White"
+                             BorderBrush="#E8B923" BorderThickness="0,0,0,1"
+                             FontSize="14" Padding="8,10" Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Genre" FontSize="13" Foreground="#AAAAAA" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="EditGenreBox"
+                              PlaceholderText="Select a genre"
+                              Background="#0D0D0D" Foreground="White"
+                              BorderBrush="#E8B923" BorderThickness="0,0,0,1"
+                              FontSize="14" Padding="8,10" Margin="0,0,0,24"
+                              HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="Action"/>
+                        <ComboBoxItem Content="Adventure"/>
+                        <ComboBoxItem Content="Animation"/>
+                        <ComboBoxItem Content="Comedy"/>
+                        <ComboBoxItem Content="Crime"/>
+                        <ComboBoxItem Content="Documentary"/>
+                        <ComboBoxItem Content="Drama"/>
+                        <ComboBoxItem Content="Fantasy"/>
+                        <ComboBoxItem Content="Horror"/>
+                        <ComboBoxItem Content="Mystery"/>
+                        <ComboBoxItem Content="Romance"/>
+                        <ComboBoxItem Content="Sci-Fi"/>
+                        <ComboBoxItem Content="Thriller"/>
+                        <ComboBoxItem Content="Western"/>
+                    </ComboBox>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/> <!-- coloana pentru buton de cancel -->
+                            <ColumnDefinition Width="*"/> <!-- coloana pentru buton de edit movie -->
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Cancel" HorizontalAlignment="Stretch"
+                                Margin="0,0,8,0" Background="#2A2A4A" Foreground="White"
+                                CornerRadius="8" Padding="0,10" Click="OnEditMovieCancel"/>
+                        <Button Grid.Column="1" Content="Save" HorizontalAlignment="Stretch"
+                                Margin="8,0,0,0" Background="#E8B923" Foreground="#0D0D0D"
+                                FontWeight="SemiBold" CornerRadius="8" Padding="0,10"
+                                Click="OnEditMovieConfirm"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Mark As Watched - DIALOG BOX  -->
+        <Grid x:Name="WatchedOverlay"
+              Grid.ColumnSpan="3"
+              Visibility="Collapsed"
+              Background="#99000000">
+            <Border Background="#1A1A2E" BorderBrush="#4CAF82" BorderThickness="1"
+                    CornerRadius="16" Padding="32,28" Width="360"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                
+                <StackPanel Spacing="0">
+                    <!-- titlu box Mark as Watched -->
+                    <TextBlock Text="Mark as Watched" FontSize="18" FontWeight="Bold"
+                               Foreground="#4CAF82" Margin="0,0,0,6"/>
+                    
+                    <!-- numele filmului -->
+                    <TextBlock x:Name="WatchedMovieName" FontSize="13"
+                               Foreground="#AAAAAA" Margin="0,0,0,20"/>
+                    
+                    <!-- rating with stars -->
+                    <TextBlock Text="Rating" FontSize="13" Foreground="#AAAAAA" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,0,0,16">
+                        <Button x:Name="StarBtn1" Content="☆" FontSize="28" Background="Transparent"
+                                BorderThickness="0" Foreground="#E8B923" Padding="2" Tag="1"
+                                Click="OnStarClick"/>
+                        <Button x:Name="StarBtn2" Content="☆" FontSize="28" Background="Transparent"
+                                BorderThickness="0" Foreground="#E8B923" Padding="2" Tag="2"
+                                Click="OnStarClick"/>
+                        <Button x:Name="StarBtn3" Content="☆" FontSize="28" Background="Transparent"
+                                BorderThickness="0" Foreground="#E8B923" Padding="2" Tag="3"
+                                Click="OnStarClick"/>
+                        <Button x:Name="StarBtn4" Content="☆" FontSize="28" Background="Transparent"
+                                BorderThickness="0" Foreground="#E8B923" Padding="2" Tag="4"
+                                Click="OnStarClick"/>
+                        <Button x:Name="StarBtn5" Content="☆" FontSize="28" Background="Transparent"
+                                BorderThickness="0" Foreground="#E8B923" Padding="2" Tag="5"
+                                Click="OnStarClick"/>
+                    </StackPanel>
+
+                    <!-- alegerea platformei platform -->
+                    <TextBlock Text="Platform" FontSize="13" Foreground="#AAAAAA" Margin="0,0,0,6"/>
+                    <TextBox x:Name="WatchedPlatformBox" PlaceholderText="e.g. Netflix, Cinema, HBO"
+                             Background="#0D0D0D" Foreground="White"
+                             BorderBrush="#4CAF82" BorderThickness="0,0,0,1"
+                             FontSize="14" Padding="8,10" Margin="0,0,0,16"/>
+
+                    <!-- data care se pune automat cu data de azi -->
+                    <TextBlock Text="Date watched" FontSize="13" Foreground="#AAAAAA" Margin="0,0,0,6"/>
+                    <TextBox x:Name="WatchedDateBox"
+                             Background="#0D0D0D" Foreground="White"
+                             BorderBrush="#4CAF82" BorderThickness="0,0,0,1"
+                             FontSize="14" Padding="8,10" IsReadOnly="True"
+                             Margin="0,0,0,24"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <!-- butonul de close -->
+                            <ColumnDefinition Width="*"/>
+                            <!-- butonul de watched confirm -->
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Cancel" HorizontalAlignment="Stretch"
+                                Margin="0,0,8,0" Background="#2A2A4A" Foreground="White"
+                                CornerRadius="8" Padding="0,10" Click="OnWatchedCancel"/>
+                        <Button Grid.Column="1" Content="Confirm" HorizontalAlignment="Stretch"
+                                Margin="8,0,0,0" Background="#4CAF82" Foreground="#0D0D0D"
+                                FontWeight="SemiBold" CornerRadius="8" Padding="0,10"
+                                Click="OnWatchedConfirm"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Button HorizontalAlignment="Right" 
+        VerticalAlignment="Bottom"
+        Margin="0,0,24,24"
+        Grid.Column="2"
+        Background="#CCFF4444" 
+        Foreground="White"
+        FontWeight="Bold"
+        CornerRadius="10"
+        Padding="15,8"
+        Click="OnLogoutClick">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Logout"/>
+                <TextBlock Text="🚪"/>
+            </StackPanel>
+        </Button>
+    </Grid>
+</Window>

@@ -1,0 +1,106 @@
+<Window
+    x:Class="TEMA1_II.Views.RegisterWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Register">
+
+    <Grid>
+
+        <!-- Background image -->
+        <Grid.Background>
+            <ImageBrush ImageSource="background.jpg"
+                        Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <!-- dark overlay -->
+        <Rectangle Fill="#000000" Opacity="0.45"/>
+
+        <!-- right panel -->
+        <Viewbox HorizontalAlignment="Right"
+                 VerticalAlignment="Center"
+                 Margin="0,0,60,0"
+                 Stretch="Uniform"
+                 MaxWidth="500"
+                 MinWidth="320">
+
+            <Border Padding="40,44"
+                    CornerRadius="16"
+                    Width="380">
+
+                <Border.Background>
+                    <SolidColorBrush Color="#000000" Opacity="0.6"/>
+                </Border.Background>
+
+                <!-- ONLY ONE StackPanel (fix important) -->
+                <StackPanel Width="300" Spacing="12">
+
+                    <TextBlock Text="Create account"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               Foreground="#E8B923"
+                               Margin="0,0,0,20"/>
+
+                    <TextBlock Text="Email"
+                               FontSize="14"
+                               Foreground="#AAAAAA"
+                               Margin="0,0,0,6"/>
+                    
+                    <TextBox x:Name="EmailBox"
+                             PlaceholderText="Email"
+                             Background="#1E1E1E"
+                             Foreground="White"/>
+
+                    <TextBlock Text="Username"
+                               FontSize="14"
+                               Foreground="#AAAAAA"
+                               Margin="0,0,0,6"/>
+                    
+                    <TextBox x:Name="UsernameBox"
+                             PlaceholderText="Username"
+                             Background="#1E1E1E"
+                             Foreground="White"/>
+
+                    <TextBlock Text="Password"
+                               FontSize="14"
+                               Foreground="#AAAAAA"
+                               Margin="0,0,0,6"/>
+                    
+                    <PasswordBox x:Name="PasswordBox"
+                                 PlaceholderText="Password"
+                                 Background="#1E1E1E"
+                                 Foreground="White"/>
+
+                    <TextBlock Text="Confirm Password"
+                               FontSize="14"
+                               Foreground="#AAAAAA"
+                               Margin="0,0,0,6"/>
+                    
+                    <PasswordBox x:Name="ConfirmPasswordBox"
+                                 PlaceholderText="Confirm password"
+                                 Background="#1E1E1E"
+                                 Foreground="White"/>
+
+                    <Button Content="Register"
+                            Click="OnRegisterClick"
+                            Background="#E8B923"
+                            Foreground="Black"
+                            FontWeight="SemiBold"
+                            Padding="10"/>
+
+                    <Button Content="← Back to login"
+        Background="Transparent"
+        Foreground="#E8B923"
+        BorderThickness="0"
+        HorizontalAlignment="Center"
+        Click="BackToLogin_Click"/>
+                    
+                </StackPanel>
+
+            </Border>
+        </Viewbox>
+
+    </Grid>
+</Window>
